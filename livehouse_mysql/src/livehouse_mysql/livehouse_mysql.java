@@ -29,16 +29,84 @@ public class livehouse_mysql {
 			System.out.println("연결되었습니다.");
 			}catch(Exception e){ System.out.println(e);} 
 	}
+	public static void command2() {
+		try {
+			rs=stmt.executeQuery("SELECT * FROM artists");
+			System.out.println("AId /Name /Phone");
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" "+rs.getString(2) + " " + rs.getString(3));
+			}
+		}catch(Exception e) { System.out.println(e);}
+	}
+	public static void command3() {
+		try {
+			rs=stmt.executeQuery("SELECT * FROM customer");
+			System.out.println("CId /Name /Phone /EId");
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" "+rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4));
+			}
+		}catch(Exception e) { System.out.println(e);}
+	}
+	public static void command4() {
+		try {
+			rs=stmt.executeQuery("SELECT * FROM events");
+			System.out.println("EId /Date /Time /Price /LId");
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" "+rs.getDate(2) + " " + rs.getTime(3) + " " + rs.getInt(4) + " " + rs.getInt(5));
+			}
+		}catch(Exception e) { System.out.println(e);}
+	}
+	public static void command5() {
+		try {
+			rs=stmt.executeQuery("SELECT * FROM livehouse");
+			System.out.println("LId /Name /Location /Capacity");
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" "+rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4));
+			}
+		}catch(Exception e) { System.out.println(e);}
+	}
+	public static void command6() {
+		try {
+			rs=stmt.executeQuery("SELECT * FROM participate");
+			System.out.println("AId /EId");
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" "+rs.getInt(2));
+			}
+		}catch(Exception e) { System.out.println(e);}
+	}
+	public static void command7() {
+		Scanner in = new Scanner(System.in);
+		System.out.print("아티스트를 알고 싶은 이벤트의 EId: ");
+		int eid = in.nextInt();
+		try {
+			rs=stmt.executeQuery("SELECT artists.Name AS ArtistName FROM artists JOIN participate ON artists.AId = participate.AId WHERE participate.EId = " + eid);
+			System.out.print(eid + "에 참여하는 아티스트는 ");
+			while(rs.next()) {
+				System.out.print(rs.getString(1) + ", ");
+			}
+			System.out.println("입니다.");
+		}catch(Exception e) { System.out.println(e);}
+		
+	}
+	public static void command8() {
+		Scanner in = new Scanner(System.in);
+		System.out.print("query를 입력하세요 : ");
+		String q = in.nextLine();
+		//System.out.println(q);
+		try {
+			stmt.executeUpdate(q);
+		}catch(Exception e) { System.out.println(e);}
+	}
 	public static void menu() {
 		System.out.println("====================");
 		System.out.println("1. connection");
-		System.out.println("2. ");
-		System.out.println("3. ");
-		System.out.println("4. ");
-		System.out.println("5. ");
-		System.out.println("6. ");
-		System.out.println("7. ");
-		System.out.println("8. ");
+		System.out.println("2. 아티스트 목록 보기");
+		System.out.println("3. 고객 목록 보기");
+		System.out.println("4. 이벤트 목록 보기");
+		System.out.println("5. 라이브하우스 목록 보기");
+		System.out.println("6. participate table 보기");
+		System.out.println("7. 어떤 아티스트가 참여하는지 보기");
+		System.out.println("8. 직접 삽입/삭제 쿼리 입력하기");
 		System.out.println("9. quit");
 		System.out.println("====================");
 		System.out.print("번호를 입력해주세요: ");
@@ -55,6 +123,27 @@ public class livehouse_mysql {
 			switch(n) {
 				case 1:
 					command1();
+					break;
+				case 2:
+					command2();
+					break;
+				case 3:
+					command3();
+					break;
+				case 4:
+					command4();
+					break;
+				case 5:
+					command5();
+					break;
+				case 6:
+					command6();
+					break;
+				case 7:
+					command7();
+					break;
+				case 8:
+					command8();
 					break;
 				case 9:
 					try {
