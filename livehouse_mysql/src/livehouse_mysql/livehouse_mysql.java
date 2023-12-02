@@ -14,7 +14,7 @@ public class livehouse_mysql {
 		try{ 
 			Class.forName("com.mysql.cj.jdbc.Driver"); 
 			con=DriverManager.getConnection(
-			"jdbc:mysql://ip:port/livehouse_db","user","password"); 
+			"jdbc:mysql://ip:port/livehouse_db","id","password"); 
 			
 			stmt=con.createStatement(); 
 			//삽입
@@ -97,6 +97,35 @@ public class livehouse_mysql {
 			stmt.executeUpdate(q);
 		}catch(Exception e) { System.out.println(e);}
 	}
+	public static void command9() {
+		Scanner in = new Scanner(System.in);
+		System.out.print("날짜를 입력하세요(xxxx-xx-xx): ");
+		String d = in.nextLine();
+		try {
+			rs=stmt.executeQuery("SELECT artists.Name AS ArtistName\r\n"
+					+ "FROM artists\r\n"
+					+ "JOIN events ON events.EId\r\n"
+					+ "WHERE events.Date = " + "'" + d + "'" + ";");
+			System.out.print(d + "에 공연하는 아티스트는 ");
+			while(rs.next()) {
+				System.out.print(rs.getString("ArtistName") + ", ");
+			}
+			System.out.println("입니다.");
+		}catch(Exception e) { System.out.println(e);}
+	}
+	public static void command10() {
+		Scanner in = new Scanner(System.in);
+		System.out.print("event의 아이디를 입력하세요: ");
+		int num = in.nextInt();
+		try {
+			rs=stmt.executeQuery("SELECT COUNT(*) AS Cuscount FROM customer WHERE EId = " + num + ";");
+			System.out.print("Eid=" + num + "의 관람객은 ");
+			while(rs.next()) {
+				System.out.println(rs.getInt("Cuscount")+"명입니다.");
+			}
+			
+		}catch(Exception e) { System.out.println(e);}
+	}
 	public static void menu() {
 		System.out.println("====================");
 		System.out.println("1. connection");
@@ -107,7 +136,9 @@ public class livehouse_mysql {
 		System.out.println("6. participate table 보기");
 		System.out.println("7. 어떤 아티스트가 참여하는지 보기");
 		System.out.println("8. 직접 삽입/삭제 쿼리 입력하기");
-		System.out.println("9. quit");
+		System.out.println("9. 특정 날짜에 공연하는 아티스트보기");
+		System.out.println("10. 관객이 몇명인지 보기");
+		System.out.println("99. quit");
 		System.out.println("====================");
 		System.out.print("번호를 입력해주세요: ");
 	}
@@ -116,7 +147,7 @@ public class livehouse_mysql {
 		
 		Scanner sc = new Scanner(System.in);
 		int n = -1;
-		while(n!=9) {
+		while(n!=99) {
 			menu();
 			n = sc.nextInt();
 			
@@ -146,6 +177,12 @@ public class livehouse_mysql {
 					command8();
 					break;
 				case 9:
+					command9();
+					break;
+				case 10:
+					command10();
+					break;
+				case 99:
 					try {
 						con.close();
 					}catch(Exception e) {System.out.println(e);}
@@ -154,9 +191,11 @@ public class livehouse_mysql {
 					System.out.println("1~9까지 명령 중 선택해주세요.");
 					break;
 			}
-				
-				
+			
 		}
+		try {
+			con.close();
+		}catch(Exception e) {System.out.println(e);}
 		System.out.println("종료");
 		
 	}
