@@ -14,7 +14,7 @@ public class livehouse_mysql {
 		try{ 
 			Class.forName("com.mysql.cj.jdbc.Driver"); 
 			con=DriverManager.getConnection(
-			"jdbc:mysql://ip:port/livehouse_db","id","password"); 
+			"jdbc:mysql://ip:port/livehouse_db","user","password"); 
 			
 			stmt=con.createStatement(); 
 			//삽입
@@ -188,7 +188,7 @@ public class livehouse_mysql {
 					}catch(Exception e) {System.out.println(e);}
 					break;
 				default:
-					System.out.println("1~9까지 명령 중 선택해주세요.");
+					System.out.println("1~99까지 명령 중 선택해주세요.");
 					break;
 			}
 			
